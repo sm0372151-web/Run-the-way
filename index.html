@@ -3,11 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>6 Player Ludo</title>
+<title>Super Ludo 6 Players</title>
 
 <style>
-
 *{
     box-sizing:border-box;
     margin:0;
@@ -15,71 +13,69 @@
 }
 
 body{
-    font-family:Arial, sans-serif;
-    background:#111827;
-    color:white;
+    font-family:Arial,sans-serif;
+    background:#151515;
+    color:#fff;
     min-height:100vh;
     padding:15px;
 }
 
 .game{
-    max-width:1100px;
+    width:min(850px,100%);
     margin:auto;
     text-align:center;
 }
 
 h1{
-    font-size:34px;
-    margin:10px 0;
+    font-size:32px;
+    margin:8px 0;
 }
 
 .subtitle{
-    color:#cbd5e1;
-    margin-bottom:15px;
+    color:#bbb;
+    margin-bottom:14px;
 }
-
-/* PLAYER SELECT */
 
 .setup{
-    background:#1f2937;
-    padding:18px;
-    border-radius:15px;
-    margin-bottom:18px;
+    background:#242424;
+    padding:14px;
+    border-radius:14px;
+    margin-bottom:14px;
 }
 
-.setup h2{
-    margin-bottom:12px;
+.setup-title{
+    font-size:18px;
+    margin-bottom:10px;
 }
 
-.player-buttons{
+.player-select{
     display:flex;
     justify-content:center;
-    gap:8px;
+    gap:7px;
     flex-wrap:wrap;
 }
 
-.player-buttons button{
-    padding:10px 17px;
-    border:none;
+.player-select button{
+    border:0;
+    padding:9px 14px;
     border-radius:8px;
+    background:#444;
+    color:white;
     cursor:pointer;
     font-weight:bold;
-    background:#374151;
-    color:white;
 }
 
-.player-buttons button.active{
-    background:#22c55e;
+.player-select button.active{
+    background:#16a34a;
 }
 
-.start-btn{
-    margin-top:15px;
-    padding:12px 25px;
+.start{
+    margin-top:10px;
     border:0;
-    border-radius:10px;
+    padding:11px 25px;
+    border-radius:9px;
     background:#2563eb;
     color:white;
-    font-size:17px;
     font-weight:bold;
     cursor:pointer;
 }
@@ -89,15 +85,15 @@ h1{
 .info{
     display:flex;
     justify-content:center;
-    gap:20px;
+    gap:10px;
     flex-wrap:wrap;
-    margin-bottom:15px;
+    margin-bottom:12px;
 }
 
-.info-box{
-    background:#1f2937;
-    padding:10px 18px;
-    border-radius:10px;
+.info span{
+    background:#292929;
+    padding:8px 15px;
+    border-radius:8px;
 }
 
 #turn{
@@ -107,382 +103,350 @@ h1{
 /* BOARD */
 
 .board{
-    width:min(700px,95vw);
-    height:min(700px,95vw);
+    width:min(720px,96vw);
+    aspect-ratio:1/1;
     margin:auto;
-
-    display:grid;
-    grid-template-columns:repeat(15,1fr);
-    grid-template-rows:repeat(15,1fr);
-
-    background:#f8fafc;
-
-    border:7px solid #020617;
-    border-radius:15px;
-
-    overflow:hidden;
-
-    box-shadow:0 15px 40px #0009;
-
     position:relative;
+    background:#f5f5f5;
+    border:7px solid #111;
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 12px 35px #000;
 }
 
-/* HOME AREAS */
+/* HOME BASES */
 
-.home{
+.base{
     position:absolute;
-    width:33.333%;
-    height:33.333%;
+    width:29%;
+    height:29%;
+    border:5px solid #111;
+    border-radius:12px;
+    padding:8px;
+    z-index:2;
+}
 
-    padding:12px;
+.base-title{
+    color:white;
+    font-weight:bold;
+    font-size:13px;
+    margin-bottom:5px;
+    text-shadow:1px 1px 2px #000;
+}
+
+.red-base{
+    left:1%;
+    top:1%;
+    background:#e53935;
+}
+
+.blue-base{
+    right:1%;
+    top:1%;
+    background:#1976d2;
+}
+
+.green-base{
+    left:1%;
+    top:35.5%;
+    background:#16a34a;
+}
+
+.yellow-base{
+    right:1%;
+    top:35.5%;
+    background:#eab308;
+}
+
+.purple-base{
+    left:1%;
+    bottom:1%;
+    background:#9333ea;
+}
+
+.orange-base{
+    right:1%;
+    bottom:1%;
+    background:#ea580c;
+}
+
+.base-inner{
+    width:100%;
+    height:calc(100% - 20px);
+    background:rgba(255,255,255,.88);
+    border-radius:8px;
+    padding:7px;
 
     display:grid;
     grid-template-columns:1fr 1fr;
     grid-template-rows:1fr 1fr;
-
-    gap:8px;
-}
-
-.home.red{
-    left:0;
-    top:0;
-    background:#ef4444;
-}
-
-.home.blue{
-    right:0;
-    top:0;
-    background:#3b82f6;
-}
-
-.home.green{
-    left:0;
-    bottom:0;
-    background:#22c55e;
-}
-
-.home.yellow{
-    right:0;
-    bottom:0;
-    background:#eab308;
-}
-
-.home.purple{
-    left:33.333%;
-    top:33.333%;
-    background:#a855f7;
-    width:16.667%;
-    height:16.667%;
-}
-
-.home.orange{
-    right:33.333%;
-    bottom:33.333%;
-    background:#f97316;
-    width:16.667%;
-    height:16.667%;
+    gap:7px;
 }
 
 .home-slot{
     background:white;
+    border:2px solid #333;
     border-radius:50%;
-    border:3px solid #111827;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:#333;
+    font-size:10px;
+    font-weight:bold;
+}
 
+/* TRACK */
+
+.track{
+    position:absolute;
+    left:31%;
+    top:3%;
+    width:38%;
+    height:94%;
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    grid-template-rows:repeat(12,1fr);
+    gap:1px;
+    z-index:3;
+}
+
+.cell{
+    background:#fff;
+    border:1px solid #aaa;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    position:relative;
+}
+
+.cell.safe{
+    background:#fff4b5;
+}
+
+.cell.red-start{
+    background:#ffc4c4;
+}
+
+.cell.blue-start{
+    background:#c7ddff;
+}
+
+.cell.green-start{
+    background:#c5f5cf;
+}
+
+.cell.yellow-start{
+    background:#fff0a8;
+}
+
+.cell.purple-start{
+    background:#e6c9ff;
+}
+
+.cell.orange-start{
+    background:#ffd0ae;
+}
+
+.safe::after{
+    content:"★";
+    color:#888;
+    font-size:13px;
+}
+
+/* SIDE TRACKS */
+
+.side-track{
+    position:absolute;
+    left:3%;
+    top:30%;
+    width:94%;
+    height:40%;
+    z-index:1;
+    display:grid;
+    grid-template-columns:repeat(14,1fr);
+    grid-template-rows:repeat(3,1fr);
+}
+
+.side-cell{
+    border:1px solid #aaa;
+    background:#fff;
     display:flex;
     align-items:center;
     justify-content:center;
-
-    color:#111;
-    font-weight:bold;
-    font-size:11px;
 }
 
 /* CENTER */
 
 .center{
     position:absolute;
-
-    left:33.333%;
-    top:33.333%;
-
-    width:33.333%;
-    height:33.333%;
-
-    background:
-    conic-gradient(
-        #ef4444 0deg 60deg,
-        #3b82f6 60deg 120deg,
-        #22c55e 120deg 180deg,
-        #eab308 180deg 240deg,
-        #a855f7 240deg 300deg,
-        #f97316 300deg 360deg
+    left:36%;
+    top:40%;
+    width:28%;
+    height:20%;
+    background:linear-gradient(
+        135deg,
+        #ef4444,
+        #2563eb,
+        #22c55e,
+        #eab308,
+        #9333ea,
+        #ea580c
     );
+    border:5px solid #111;
+    border-radius:50%;
+    z-index:8;
 
     display:flex;
-    align-items:center;
     justify-content:center;
+    align-items:center;
 
-    font-size:25px;
+    font-size:24px;
     font-weight:bold;
-
-    border:3px solid #111827;
-}
-
-/* PATH */
-
-.path{
-    position:absolute;
-
-    left:16.667%;
-    top:16.667%;
-
-    width:66.666%;
-    height:66.666%;
-
-    display:grid;
-
-    grid-template-columns:repeat(11,1fr);
-    grid-template-rows:repeat(11,1fr);
-
-    pointer-events:none;
-}
-
-.path-cell{
-    border:1px solid #94a3b8;
-    background:#fff;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    font-size:9px;
-    color:#64748b;
-}
-
-/* TRACK COLORS */
-
-.red-cell{
-    background:#fecaca;
-}
-
-.blue-cell{
-    background:#bfdbfe;
-}
-
-.green-cell{
-    background:#bbf7d0;
-}
-
-.yellow-cell{
-    background:#fef08a;
-}
-
-.purple-cell{
-    background:#e9d5ff;
-}
-
-.orange-cell{
-    background:#fed7aa;
+    text-shadow:2px 2px 3px #000;
 }
 
 /* TOKENS */
 
 .token{
-    width:72%;
-    height:72%;
-
+    position:absolute;
+    width:32px;
+    height:32px;
     border-radius:50%;
-
     border:3px solid #111;
 
     display:flex;
     align-items:center;
     justify-content:center;
 
-    font-size:10px;
-    font-weight:bold;
-
     color:white;
-
-    cursor:pointer;
-
-    position:absolute;
+    font-weight:bold;
+    font-size:11px;
 
     z-index:20;
 
     box-shadow:0 3px 7px #0008;
+    cursor:pointer;
 
-    transition:.2s;
+    transition:.25s;
 }
 
 .token:hover{
-    transform:scale(1.18);
+    transform:scale(1.15);
 }
 
-.token.movable{
-    animation:pulse 1s infinite;
+.movable{
+    animation:movePulse .7s infinite alternate;
 }
 
-@keyframes pulse{
-    50%{
-        transform:scale(1.15);
+@keyframes movePulse{
+    from{
+        box-shadow:0 0 4px #fff;
+        transform:scale(1);
+    }
+    to{
+        box-shadow:0 0 18px #fff;
+        transform:scale(1.18);
     }
 }
 
-.red-token{
-    background:#dc2626;
-}
+.red-token{background:#d32f2f;}
+.blue-token{background:#1565c0;}
+.green-token{background:#15803d;}
+.yellow-token{background:#ca8a04;}
+.purple-token{background:#7e22ce;}
+.orange-token{background:#c2410c;}
 
-.blue-token{
-    background:#2563eb;
-}
-
-.green-token{
-    background:#16a34a;
-}
-
-.yellow-token{
-    background:#ca8a04;
-}
-
-.purple-token{
-    background:#9333ea;
-}
-
-.orange-token{
-    background:#ea580c;
-}
-
-/* CONTROLS */
+/* DICE */
 
 .controls{
-    margin-top:18px;
-
+    margin-top:15px;
     display:flex;
     justify-content:center;
     align-items:center;
-
-    gap:15px;
-    flex-wrap:wrap;
+    gap:14px;
 }
 
 .dice{
-    width:75px;
-    height:75px;
-
+    width:70px;
+    height:70px;
     background:white;
     color:#111;
-
-    border-radius:15px;
-
+    border-radius:14px;
     display:flex;
-    align-items:center;
     justify-content:center;
-
+    align-items:center;
     font-size:40px;
     font-weight:bold;
-
-    box-shadow:0 5px 15px #0007;
+    box-shadow:0 5px 15px #0008;
 }
 
 .roll{
-    padding:14px 25px;
-
-    background:#22c55e;
-    color:white;
-
     border:0;
+    background:#16a34a;
+    color:white;
+    padding:14px 24px;
     border-radius:10px;
-
-    font-size:18px;
+    font-size:17px;
     font-weight:bold;
-
     cursor:pointer;
 }
 
 .roll:hover{
-    background:#16a34a;
+    background:#15803d;
 }
 
 .roll:disabled{
-    background:#475569;
+    background:#555;
     cursor:not-allowed;
 }
 
-/* MESSAGE */
-
 .message{
     min-height:28px;
-    margin-top:15px;
-    font-size:18px;
+    margin-top:12px;
+    font-size:17px;
     font-weight:bold;
 }
 
-/* PLAYER LIST */
+.restart{
+    margin-top:12px;
+    border:0;
+    background:#dc2626;
+    color:white;
+    padding:9px 18px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+/* PLAYER COLORS */
 
 .players{
-    margin-top:15px;
-
+    margin-top:14px;
     display:flex;
     justify-content:center;
-
-    gap:7px;
+    gap:6px;
     flex-wrap:wrap;
 }
 
 .player{
-    padding:8px 12px;
-    border-radius:8px;
+    padding:7px 11px;
+    border-radius:7px;
+    font-size:13px;
     font-weight:bold;
 }
 
-.red{
-    background:#dc2626;
-}
-
-.blue{
-    background:#2563eb;
-}
-
-.green{
-    background:#16a34a;
-}
-
-.yellow{
-    background:#ca8a04;
-}
-
-.purple{
-    background:#9333ea;
-}
-
-.orange{
-    background:#ea580c;
-}
-
-/* RESTART */
-
-.restart{
-    margin-top:15px;
-
-    padding:10px 20px;
-
-    border:0;
-    border-radius:8px;
-
-    background:#ef4444;
-    color:white;
-
-    cursor:pointer;
-    font-weight:bold;
-}
+.p-red{background:#d32f2f;}
+.p-blue{background:#1565c0;}
+.p-green{background:#15803d;}
+.p-yellow{background:#ca8a04;}
+.p-purple{background:#7e22ce;}
+.p-orange{background:#c2410c;}
 
 /* MOBILE */
 
 @media(max-width:600px){
 
     body{
-        padding:7px;
+        padding:6px;
     }
 
     h1{
@@ -493,23 +457,42 @@ h1{
         border-width:4px;
     }
 
-    .home{
-        padding:5px;
+    .base{
+        border-width:3px;
+        padding:4px;
+    }
+
+    .base-title{
+        font-size:8px;
+        margin-bottom:2px;
+    }
+
+    .base-inner{
+        padding:3px;
         gap:3px;
     }
 
     .home-slot{
-        border-width:2px;
         font-size:7px;
+        border-width:1px;
     }
 
     .token{
-        border-width:2px;
+        width:23px;
+        height:23px;
         font-size:7px;
+        border-width:2px;
     }
 
     .center{
         font-size:14px;
+        border-width:3px;
+    }
+
+    .dice{
+        width:60px;
+        height:60px;
+        font-size:32px;
     }
 
 }
@@ -521,49 +504,61 @@ h1{
 
 <div class="game">
 
-<h1>🎲 6 PLAYER LUDO</h1>
+<h1>🎲 SUPER LUDO</h1>
 
 <div class="subtitle">
-Play Ludo with your friends
+6 Player Ludo Game
 </div>
 
 
-<!-- PLAYER SETUP -->
+<!-- PLAYER SELECT -->
 
 <div class="setup">
 
-<h2>Select Players</h2>
+<div class="setup-title">
+👥 Select Number of Players
+</div>
 
-<div class="player-buttons">
+<div class="player-select">
 
-<button onclick="selectPlayers(2)" id="p2">2 Players</button>
-<button onclick="selectPlayers(3)" id="p3">3 Players</button>
-<button onclick="selectPlayers(4)" id="p4" class="active">4 Players</button>
-<button onclick="selectPlayers(5)" id="p5">5 Players</button>
-<button onclick="selectPlayers(6)" id="p6">6 Players</button>
+<button onclick="choosePlayers(2)" id="n2">
+2 Players
+</button>
+
+<button onclick="choosePlayers(3)" id="n3">
+3 Players
+</button>
+
+<button onclick="choosePlayers(4)" id="n4" class="active">
+4 Players
+</button>
+
+<button onclick="choosePlayers(5)" id="n5">
+5 Players
+</button>
+
+<button onclick="choosePlayers(6)" id="n6">
+6 Players
+</button>
 
 </div>
 
-<button class="start-btn" onclick="startGame()">
-Start Game
+<button class="start" onclick="startGame()">
+▶ Start Game
 </button>
 
 </div>
 
 
-<!-- INFO -->
-
 <div class="info">
 
-<div class="info-box">
-Players:
-<span id="playerCount">4</span>
-</div>
+<span>
+Players: <b id="playerNumber">4</b>
+</span>
 
-<div class="info-box">
-Turn:
-<span id="turn">Red</span>
-</div>
+<span>
+Turn: <b id="turn">Red</b>
+</span>
 
 </div>
 
@@ -573,78 +568,125 @@ Turn:
 <div class="board" id="board">
 
 
-<!-- HOMES -->
+<!-- RED -->
 
-<div class="home red">
+<div class="base red-base">
 
-<div class="home-slot">R1</div>
-<div class="home-slot">R2</div>
-<div class="home-slot">R3</div>
-<div class="home-slot">R4</div>
+<div class="base-title">🔴 RED</div>
+
+<div class="base-inner">
+
+<div class="home-slot">1</div>
+<div class="home-slot">2</div>
+<div class="home-slot">3</div>
+<div class="home-slot">4</div>
+
+</div>
 
 </div>
 
 
-<div class="home blue">
+<!-- BLUE -->
 
-<div class="home-slot">B1</div>
-<div class="home-slot">B2</div>
-<div class="home-slot">B3</div>
-<div class="home-slot">B4</div>
+<div class="base blue-base">
+
+<div class="base-title">🔵 BLUE</div>
+
+<div class="base-inner">
+
+<div class="home-slot">1</div>
+<div class="home-slot">2</div>
+<div class="home-slot">3</div>
+<div class="home-slot">4</div>
+
+</div>
 
 </div>
 
 
-<div class="home green">
+<!-- GREEN -->
 
-<div class="home-slot">G1</div>
-<div class="home-slot">G2</div>
-<div class="home-slot">G3</div>
-<div class="home-slot">G4</div>
+<div class="base green-base">
+
+<div class="base-title">🟢 GREEN</div>
+
+<div class="base-inner">
+
+<div class="home-slot">1</div>
+<div class="home-slot">2</div>
+<div class="home-slot">3</div>
+<div class="home-slot">4</div>
+
+</div>
 
 </div>
 
 
-<div class="home yellow">
+<!-- YELLOW -->
 
-<div class="home-slot">Y1</div>
-<div class="home-slot">Y2</div>
-<div class="home-slot">Y3</div>
-<div class="home-slot">Y4</div>
+<div class="base yellow-base">
+
+<div class="base-title">🟡 YELLOW</div>
+
+<div class="base-inner">
+
+<div class="home-slot">1</div>
+<div class="home-slot">2</div>
+<div class="home-slot">3</div>
+<div class="home-slot">4</div>
+
+</div>
 
 </div>
 
 
-<div class="home purple">
+<!-- PURPLE -->
 
-<div class="home-slot">P1</div>
-<div class="home-slot">P2</div>
-<div class="home-slot">P3</div>
-<div class="home-slot">P4</div>
+<div class="base purple-base">
+
+<div class="base-title">🟣 PURPLE</div>
+
+<div class="base-inner">
+
+<div class="home-slot">1</div>
+<div class="home-slot">2</div>
+<div class="home-slot">3</div>
+<div class="home-slot">4</div>
+
+</div>
 
 </div>
 
 
-<div class="home orange">
+<!-- ORANGE -->
 
-<div class="home-slot">O1</div>
-<div class="home-slot">O2</div>
-<div class="home-slot">O3</div>
-<div class="home-slot">O4</div>
+<div class="base orange-base">
+
+<div class="base-title">🟠 ORANGE</div>
+
+<div class="base-inner">
+
+<div class="home-slot">1</div>
+<div class="home-slot">2</div>
+<div class="home-slot">3</div>
+<div class="home-slot">4</div>
 
 </div>
+
+</div>
+
+
+<!-- SIDE TRACK -->
+
+<div class="side-track" id="sideTrack"></div>
 
 
 <!-- CENTER -->
 
 <div class="center">
-🏆
+🏆 LUDO
 </div>
 
-
-<!-- PATH -->
-
-<div class="path" id="path"></div>
 
 </div>
 
@@ -657,34 +699,32 @@ Turn:
 🎲
 </div>
 
-<button class="roll" id="rollButton" onclick="rollDice()">
-Roll Dice
+<button class="roll" id="roll" onclick="rollDice()">
+🎲 ROLL DICE
 </button>
 
 </div>
 
 
 <div class="message" id="message">
-Red's turn. Roll the dice!
+Red's turn — Roll the dice!
 </div>
 
 
-<!-- PLAYERS -->
-
 <div class="players">
 
-<div class="player red">🔴 Red</div>
-<div class="player blue">🔵 Blue</div>
-<div class="player green">🟢 Green</div>
-<div class="player yellow">🟡 Yellow</div>
-<div class="player purple">🟣 Purple</div>
-<div class="player orange">🟠 Orange</div>
+<div class="player p-red">🔴 Red</div>
+<div class="player p-blue">🔵 Blue</div>
+<div class="player p-green">🟢 Green</div>
+<div class="player p-yellow">🟡 Yellow</div>
+<div class="player p-purple">🟣 Purple</div>
+<div class="player p-orange">🟠 Orange</div>
 
 </div>
 
 
 <button class="restart" onclick="startGame()">
-🔄 Restart Game
+🔄 Restart
 </button>
 
 </div>
@@ -692,182 +732,171 @@ Red's turn. Roll the dice!
 
 <script>
 
-/* =========================
-   PLAYER DATA
-========================= */
+/* ===================================
+   PLAYERS
+=================================== */
 
-const allPlayers = [
+const COLORS = [
 
 {
     name:"Red",
-    color:"red",
-    emoji:"🔴",
-    start:0
+    css:"red",
+    emoji:"🔴"
 },
 
 {
     name:"Blue",
-    color:"blue",
-    emoji:"🔵",
-    start:10
+    css:"blue",
+    emoji:"🔵"
 },
 
 {
     name:"Green",
-    color:"green",
-    emoji:"🟢",
-    start:20
+    css:"green",
+    emoji:"🟢"
 },
 
 {
     name:"Yellow",
-    color:"yellow",
-    emoji:"🟡",
-    start:30
+    css:"yellow",
+    emoji:"🟡"
 },
 
 {
     name:"Purple",
-    color:"purple",
-    emoji:"🟣",
-    start:40
+    css:"purple",
+    emoji:"🟣"
 },
 
 {
     name:"Orange",
-    color:"orange",
-    emoji:"🟠",
-    start:50
+    css:"orange",
+    emoji:"🟠"
 }
 
 ];
 
 
-/* =========================
-   GAME VARIABLES
-========================= */
+let playerCount = 4;
 
-let numberOfPlayers = 4;
+let activePlayers = [];
 
-let players = [];
+let current = 0;
 
-let currentPlayer = 0;
+let dice = 0;
 
-let diceValue = 0;
-
-let gameStarted = false;
+let gameRunning = false;
 
 
 /*
-Each player has 4 tokens.
-
--1 = HOME
-0+ = board position
-60 = FINISHED
+-1 = home
+0-59 = board
+60 = finished
 */
 
-let tokens = [];
+let pieces = [];
 
 
-/* =========================
-   SELECT PLAYERS
-========================= */
+/* ===================================
+   PLAYER SELECTION
+=================================== */
 
-function selectPlayers(number){
+function choosePlayers(number){
 
-    numberOfPlayers = number;
+    playerCount = number;
 
     document
-    .querySelectorAll(".player-buttons button")
+    .querySelectorAll(".player-select button")
     .forEach(button=>{
         button.classList.remove("active");
     });
 
     document
-    .getElementById("p"+number)
+    .getElementById("n"+number)
     .classList.add("active");
 
     document
-    .getElementById("playerCount")
-    .innerText = number;
+    .getElementById("playerNumber")
+    .textContent = number;
 
 }
 
 
-/* =========================
-   START GAME
-========================= */
+/* ===================================
+   START
+=================================== */
 
 function startGame(){
 
-    players = allPlayers.slice(0,numberOfPlayers);
+    activePlayers =
+        COLORS.slice(0,playerCount);
 
-    currentPlayer = 0;
+    current = 0;
 
-    diceValue = 0;
+    dice = 0;
 
-    gameStarted = true;
+    gameRunning = true;
 
-    tokens = [];
+    pieces = [];
 
-    players.forEach((player,index)=>{
+    activePlayers.forEach((player,index)=>{
 
-        tokens[index] = [-1,-1,-1,-1];
+        pieces[index] =
+            [-1,-1,-1,-1];
 
     });
 
-    document.getElementById("dice").innerText = "🎲";
+    document.getElementById("dice").textContent="🎲";
 
-    document.getElementById("turn").innerText =
-        players[0].name;
+    document.getElementById("turn").textContent =
+        activePlayers[0].name;
 
-    document.getElementById("message").innerText =
-        players[0].name + "'s turn. Roll the dice!";
+    document.getElementById("message").textContent =
+        activePlayers[0].emoji +
+        " " +
+        activePlayers[0].name +
+        "'s turn — Roll the dice!";
 
-    document.getElementById("rollButton").disabled = false;
+    document.getElementById("roll").disabled=false;
 
-    drawTokens();
+    drawPieces();
 
 }
 
 
-/* =========================
+/* ===================================
    DICE
-========================= */
+=================================== */
 
 function rollDice(){
 
-    if(!gameStarted) return;
+    if(!gameRunning){
+        return;
+    }
 
-    diceValue =
+    dice =
         Math.floor(Math.random()*6)+1;
 
-    document.getElementById("dice").innerText =
-        diceValue;
+    document.getElementById("dice").textContent =
+        dice;
 
-    let player = players[currentPlayer];
+    let player =
+        activePlayers[current];
 
-    document.getElementById("message").innerText =
-        player.emoji +
-        " " +
-        player.name +
-        " rolled " +
-        diceValue +
-        "!";
+    let possible =
+        getPossiblePieces();
 
-    /*
-    Check movable tokens
-    */
+    if(possible.length===0){
 
-    let movable = getMovableTokens();
-
-    if(movable.length === 0){
-
-        document.getElementById("message").innerText =
+        document.getElementById("message").textContent =
+            player.emoji +
+            " " +
             player.name +
-            " has no possible move.";
+            " rolled " +
+            dice +
+            " — no move.";
 
-        if(diceValue !== 6){
+        if(dice!==6){
 
             setTimeout(nextTurn,900);
 
@@ -876,65 +905,47 @@ function rollDice(){
         return;
     }
 
-    /*
-    Highlight movable tokens
-    */
 
-    highlightMovable(movable);
+    document.getElementById("message").textContent =
+        player.emoji +
+        " " +
+        player.name +
+        " rolled " +
+        dice +
+        " — choose a highlighted piece!";
+
+
+    highlightPieces(possible);
 
 }
 
 
-/* =========================
-   MOVABLE TOKENS
-========================= */
+/* ===================================
+   POSSIBLE MOVES
+=================================== */
 
-function getMovableTokens(){
+function getPossiblePieces(){
 
-    let result = [];
+    let result=[];
 
-    let playerTokens =
-        tokens[currentPlayer];
+    pieces[current].forEach((position,index)=>{
 
-    playerTokens.forEach((position,index)=>{
+        if(position===60){
+            return;
+        }
 
-        /*
-        Token in HOME
+        if(position===-1){
 
-        Only 6 can bring it out
-        */
-
-        if(position === -1){
-
-            if(diceValue === 6){
-
+            if(dice===6){
                 result.push(index);
-
             }
 
-            return;
-
         }
+        else{
 
-
-        /*
-        Finished token
-        */
-
-        if(position === 60){
-
-            return;
-
-        }
-
-
-        /*
-        Normal movement
-        */
-
-        if(position + diceValue <= 60){
-
-            result.push(index);
+            if(position+dice<=60){
+                result.push(index);
+            }
 
         }
 
@@ -945,18 +956,16 @@ function getMovableTokens(){
 }
 
 
-/* =========================
+/* ===================================
    HIGHLIGHT
-========================= */
+=================================== */
 
-function highlightMovable(list){
+function highlightPieces(list){
 
     document
     .querySelectorAll(".token")
     .forEach(token=>{
-
         token.classList.remove("movable");
-
     });
 
 
@@ -964,7 +973,11 @@ function highlightMovable(list){
 
         let token =
             document.querySelector(
-                `.token[data-player="${currentPlayer}"][data-token="${index}"]`
+                '.token[data-player="'+
+                current+
+                '"][data-piece="'+
+                index+
+                '"]'
             );
 
         if(token){
@@ -977,107 +990,109 @@ function highlightMovable(list){
 
 
     /*
-    For easy testing,
-    automatically move after short delay
+    If only one piece can move,
+    move it automatically.
     */
 
-    if(list.length === 1){
+    if(list.length===1){
 
         setTimeout(()=>{
 
-            moveToken(list[0]);
+            movePiece(list[0]);
 
-        },500);
+        },600);
 
     }
 
 }
 
 
-/* =========================
-   MOVE TOKEN
-========================= */
+/* ===================================
+   MOVE
+=================================== */
 
-function moveToken(tokenIndex){
+function movePiece(pieceIndex){
 
-    let playerTokens =
-        tokens[currentPlayer];
-
-    let oldPosition =
-        playerTokens[tokenIndex];
+    let position =
+        pieces[current][pieceIndex];
 
 
     /*
-    HOME -> BOARD
+    HOME -> START
     */
 
-    if(oldPosition === -1){
+    if(position===-1){
 
-        if(diceValue !== 6){
-
+        if(dice!==6){
             return;
-
         }
 
-        playerTokens[tokenIndex] = 0;
+        pieces[current][pieceIndex]=0;
 
     }
-
     else{
 
-        playerTokens[tokenIndex] += diceValue;
+        pieces[current][pieceIndex]
+            += dice;
 
     }
 
 
     let newPosition =
-        playerTokens[tokenIndex];
+        pieces[current][pieceIndex];
 
 
     /*
     CAPTURE
     */
 
-    captureOpponents(
-        currentPlayer,
-        newPosition
-    );
+    capturePieces(newPosition);
 
 
     /*
-    WIN CHECK
+    DRAW
     */
 
-    if(checkWinner(currentPlayer)){
+    drawPieces();
 
-        document.getElementById("message").innerText =
+
+    /*
+    WIN
+    */
+
+    if(
+        pieces[current]
+        .every(position=>position===60)
+    ){
+
+        document.getElementById("message").textContent =
             "🏆 " +
-            players[currentPlayer].name +
-            " WINS THE GAME! 🎉";
+            activePlayers[current].emoji +
+            " " +
+            activePlayers[current].name +
+            " WINS! 🎉";
 
-        document.getElementById("rollButton").disabled =
-            true;
+        document.getElementById("roll").disabled=true;
+
+        gameRunning=false;
 
         return;
-
     }
 
 
-    drawTokens();
-
-
     /*
-    6 = another turn
+    SIX = EXTRA TURN
     */
 
-    if(diceValue === 6){
+    if(dice===6){
 
-        document.getElementById("message").innerText =
-            players[currentPlayer].name +
-            " rolled 6! Roll again.";
+        document.getElementById("message").textContent =
+            activePlayers[current].emoji +
+            " " +
+            activePlayers[current].name +
+            " rolled 6 — Roll again!";
 
-        document.getElementById("dice").innerText =
-            "🎲";
+        document.getElementById("dice").textContent="🎲";
 
         return;
 
@@ -1089,75 +1104,75 @@ function moveToken(tokenIndex){
 }
 
 
-/* =========================
+/* ===================================
    CAPTURE
-========================= */
+=================================== */
 
-function captureOpponents(playerIndex,position){
+function capturePieces(position){
 
-    if(position < 0 || position >= 60){
-
+    if(position<0 || position>=60){
         return;
-
     }
 
 
     /*
-    Safe starting positions
+    Six safe positions
     */
 
-    const safePositions =
-        [0,10,20,30,40,50];
+    const safe=[
+        0,10,20,30,40,50
+    ];
 
 
-    if(safePositions.includes(
-        (position +
-        players[playerIndex].start)%60
-    )){
-
+    if(safe.includes(position)){
         return;
-
     }
 
 
-    players.forEach((player,index)=>{
+    activePlayers.forEach((player,index)=>{
 
-        if(index === playerIndex){
-
+        if(index===current){
             return;
-
         }
 
 
-        tokens[index].forEach((tokenPosition,tokenIndex)=>{
+        pieces[index].forEach((enemyPosition,pieceIndex)=>{
 
-            if(tokenPosition === -1 ||
-               tokenPosition === 60){
+            if(enemyPosition<0 ||
+               enemyPosition===60){
 
                 return;
 
             }
 
 
-            let realPosition =
-                (players[index].start +
-                tokenPosition)%60;
+            /*
+            Convert both players to
+            the same 60-cell track.
+            */
+
+            let enemyReal =
+                (enemyPosition +
+                 index*10)%60;
+
+            let myReal =
+                (position +
+                 current*10)%60;
 
 
-            let myRealPosition =
-                (players[playerIndex].start +
-                position)%60;
+            if(enemyReal===myReal){
 
+                pieces[index][pieceIndex]=-1;
 
-            if(realPosition === myRealPosition){
-
-                tokens[index][tokenIndex] = -1;
-
-                document.getElementById("message").innerText =
-                    players[playerIndex].name +
+                document.getElementById("message").textContent =
+                    activePlayers[current].emoji +
+                    " " +
+                    activePlayers[current].name +
                     " captured " +
-                    players[index].name +
-                    "'s token! 💥";
+                    activePlayers[index].emoji +
+                    " " +
+                    activePlayers[index].name +
+                    "! 💥";
 
             }
 
@@ -1168,93 +1183,79 @@ function captureOpponents(playerIndex,position){
 }
 
 
-/* =========================
-   WINNER
-========================= */
-
-function checkWinner(playerIndex){
-
-    return tokens[playerIndex]
-        .every(position=>position === 60);
-
-}
-
-
-/* =========================
+/* ===================================
    NEXT TURN
-========================= */
+=================================== */
 
 function nextTurn(){
 
-    currentPlayer++;
+    current++;
 
-    if(currentPlayer >= players.length){
+    if(current>=activePlayers.length){
 
-        currentPlayer = 0;
+        current=0;
 
     }
 
 
-    document.getElementById("turn").innerText =
-        players[currentPlayer].name;
+    document.getElementById("turn").textContent =
+        activePlayers[current].name;
 
 
     document.getElementById("turn").style.color =
-        getColor(players[currentPlayer].color);
+        getColor(activePlayers[current].css);
 
 
-    document.getElementById("dice").innerText =
-        "🎲";
+    document.getElementById("dice").textContent="🎲";
 
 
-    document.getElementById("message").innerText =
-        players[currentPlayer].emoji +
+    document.getElementById("message").textContent =
+        activePlayers[current].emoji +
         " " +
-        players[currentPlayer].name +
-        "'s turn. Roll the dice!";
+        activePlayers[current].name +
+        "'s turn — Roll the dice!";
 
 
-    drawTokens();
-
-}
-
-
-/* =========================
-   COLOR
-========================= */
-
-function getColor(color){
-
-    const colors = {
-
-        red:"#dc2626",
-
-        blue:"#2563eb",
-
-        green:"#16a34a",
-
-        yellow:"#eab308",
-
-        purple:"#9333ea",
-
-        orange:"#ea580c"
-
-    };
-
-    return colors[color];
+    drawPieces();
 
 }
 
 
-/* =========================
-   DRAW TOKENS
-========================= */
+/* ===================================
+   DRAW TRACK
+=================================== */
 
-function drawTokens(){
+function createTrack(){
 
-    /*
-    Remove old tokens
-    */
+    const track =
+        document.getElementById("sideTrack");
+
+    track.innerHTML="";
+
+
+    for(let i=0;i<42;i++){
+
+        let cell =
+            document.createElement("div");
+
+        cell.className="side-cell";
+
+        if(i%7===0){
+            cell.textContent="★";
+        }
+
+        track.appendChild(cell);
+
+    }
+
+}
+
+
+/* ===================================
+   DRAW PIECES
+=================================== */
+
+function drawPieces(){
 
     document
     .querySelectorAll(".token")
@@ -1263,21 +1264,18 @@ function drawTokens(){
     });
 
 
-    players.forEach((player,playerIndex)=>{
+    activePlayers.forEach((player,playerIndex)=>{
 
-        tokens[playerIndex].forEach(
-            (position,tokenIndex)=>{
+        pieces[playerIndex].forEach(
+            (position,pieceIndex)=>{
 
-                if(position === 60){
-
+                if(position===60){
                     return;
-
                 }
 
-
-                createToken(
+                createPiece(
                     playerIndex,
-                    tokenIndex,
+                    pieceIndex,
                     position
                 );
 
@@ -1289,54 +1287,59 @@ function drawTokens(){
 }
 
 
-/* =========================
-   CREATE TOKEN
-========================= */
+/* ===================================
+   CREATE PIECE
+=================================== */
 
-function createToken(
+function createPiece(
     playerIndex,
-    tokenIndex,
+    pieceIndex,
     position
 ){
 
     let token =
         document.createElement("div");
 
+
     token.className =
-        "token " +
-        players[playerIndex].color +
+        "token "+
+        activePlayers[playerIndex].css+
         "-token";
 
 
-    token.innerText =
-        tokenIndex+1;
+    token.textContent =
+        pieceIndex+1;
 
 
     token.dataset.player =
         playerIndex;
 
 
-    token.dataset.token =
-        tokenIndex;
+    token.dataset.piece =
+        pieceIndex;
 
 
     /*
     HOME POSITION
     */
 
-    if(position === -1){
+    if(position===-1){
 
-        placeHomeToken(
+        placeHomePiece(
             token,
             playerIndex,
-            tokenIndex
+            pieceIndex
         );
 
     }
 
+    /*
+    BOARD POSITION
+    */
+
     else{
 
-        placeBoardToken(
+        placeBoardPiece(
             token,
             playerIndex,
             position
@@ -1349,203 +1352,243 @@ function createToken(
     .getElementById("board")
     .appendChild(token);
 
+
+    token.onclick=function(){
+
+        if(playerIndex!==current){
+            return;
+        }
+
+
+        let possible =
+            getPossiblePieces();
+
+
+        if(possible.includes(pieceIndex)){
+
+            movePiece(pieceIndex);
+
+        }
+
+    };
+
 }
 
 
-/* =========================
-   HOME TOKEN
-========================= */
+/* ===================================
+   HOME PIECE
+=================================== */
 
-function placeHomeToken(
+function placeHomePiece(
     token,
-    playerIndex,
-    tokenIndex
+    player,
+    piece
 ){
 
-    const positions = [
+    /*
+    Six base positions
+    */
+
+    const locations=[
 
         [
-            [4,4],
-            [10,4],
-            [4,10],
-            [10,10]
+            [5,7],
+            [16,7],
+            [5,18],
+            [16,18]
         ],
 
         [
-            [4,52],
-            [10,52],
-            [4,58],
-            [10,58]
+            [78,7],
+            [89,7],
+            [78,18],
+            [89,18]
         ],
 
         [
-            [4,4],
-            [10,4],
-            [4,10],
-            [10,10]
+            [5,40],
+            [16,40],
+            [5,51],
+            [16,51]
         ],
 
         [
-            [78,4],
-            [84,4],
-            [78,10],
-            [84,10]
+            [78,40],
+            [89,40],
+            [78,51],
+            [89,51]
         ],
 
         [
-            [42,42],
-            [46,42],
-            [42,46],
-            [46,46]
+            [5,72],
+            [16,72],
+            [5,83],
+            [16,83]
         ],
 
         [
-            [54,54],
-            [58,54],
-            [54,58],
-            [58,58]
+            [78,72],
+            [89,72],
+            [78,83],
+            [89,83]
         ]
 
     ];
 
 
-    let pos =
-        positions[playerIndex][tokenIndex];
+    let p =
+        locations[player][piece];
 
 
     token.style.left =
-        pos[0] + "%";
+        p[0]+"%";
 
 
     token.style.top =
-        pos[1] + "%";
-
-
-    token.style.width =
-        "7%";
-
-
-    token.style.height =
-        "7%";
-
-
-    token.onclick = ()=>{
-
-        if(
-            playerIndex === currentPlayer &&
-            diceValue === 6
-        ){
-
-            moveToken(tokenIndex);
-
-        }
-
-    };
+        p[1]+"%";
 
 }
 
 
-/* =========================
-   BOARD TOKEN
-========================= */
+/* ===================================
+   BOARD PIECE
+=================================== */
 
-function placeBoardToken(
+function placeBoardPiece(
     token,
-    playerIndex,
+    player,
     position
 ){
 
     /*
-    Create circular path
+    Square-style 60 cell path.
     */
 
-    const angle =
-        ((position % 60)/60) *
-        Math.PI * 2 -
-        Math.PI/2;
+    const points =
+        getTrackPoints();
 
 
-    const radius = 30;
+    let index =
+        (position +
+         player*10)%60;
 
 
-    const centerX = 50;
-    const centerY = 50;
-
-
-    let x =
-        centerX +
-        Math.cos(angle)*radius;
-
-
-    let y =
-        centerY +
-        Math.sin(angle)*radius;
+    let point =
+        points[index];
 
 
     token.style.left =
-        (x-3.5) + "%";
+        (point[0]-2)+"%";
 
 
     token.style.top =
-        (y-3.5) + "%";
+        (point[1]-2)+"%";
+
+}
 
 
-    token.style.width =
-        "7%";
+/* ===================================
+   TRACK POINTS
+=================================== */
+
+function getTrackPoints(){
+
+    let points=[];
 
 
-    token.style.height =
-        "7%";
+    /*
+    Top
+    */
+
+    for(let x=20;x<=80;x+=5){
+
+        points.push([x,20]);
+
+    }
 
 
-    token.onclick = ()=>{
+    /*
+    Right
+    */
 
-        if(playerIndex !== currentPlayer){
+    for(let y=25;y<=80;y+=5){
 
-            return;
+        points.push([80,y]);
 
-        }
-
-
-        let movable =
-            getMovableTokens();
+    }
 
 
-        if(movable.includes(tokenIndexFromToken(token))){
+    /*
+    Bottom
+    */
 
-            moveToken(
-                tokenIndexFromToken(token)
-            );
+    for(let x=75;x>=20;x-=5){
 
-        }
+        points.push([x,80]);
+
+    }
+
+
+    /*
+    Left
+    */
+
+    for(let y=75;y>=25;y-=5){
+
+        points.push([20,y]);
+
+    }
+
+
+    /*
+    Make exactly 60 positions
+    */
+
+    while(points.length<60){
+
+        points.push(
+            points[points.length%40]
+        );
+
+    }
+
+
+    return points.slice(0,60);
+
+}
+
+
+/* ===================================
+   COLOR
+=================================== */
+
+function getColor(color){
+
+    const map={
+
+        red:"#ef4444",
+        blue:"#3b82f6",
+        green:"#22c55e",
+        yellow:"#eab308",
+        purple:"#a855f7",
+        orange:"#f97316"
 
     };
 
-}
-
-
-/* =========================
-   TOKEN INDEX
-========================= */
-
-function tokenIndexFromToken(token){
-
-    return parseInt(
-        token.dataset.token
-    );
+    return map[color];
 
 }
 
 
-/* =========================
-   KEYBOARD
-========================= */
+/* ===================================
+   KEYBOARD SPACE
+=================================== */
 
 document.addEventListener(
     "keydown",
     function(event){
 
-        if(event.code === "Space"){
+        if(event.code==="Space"){
 
             rollDice();
 
@@ -1555,11 +1598,13 @@ document.addEventListener(
 );
 
 
-/* =========================
-   START
-========================= */
+/* ===================================
+   INITIAL
+=================================== */
 
-selectPlayers(4);
+createTrack();
+
+choosePlayers(4);
 
 startGame();
 
