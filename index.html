@@ -3,1052 +3,1565 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RUNING - Endless Runner</title>
+
+<title>6 Player Ludo</title>
 
 <style>
+
 *{
     box-sizing:border-box;
     margin:0;
     padding:0;
-    -webkit-tap-highlight-color:transparent;
 }
 
 body{
-    background:#050816;
-    font-family:Arial,Helvetica,sans-serif;
-    overflow:hidden;
-}
-
-#game{
-    position:relative;
-    width:100vw;
-    height:100vh;
-    min-height:500px;
-    overflow:hidden;
-    background:
-      linear-gradient(#07152f 0%,#123b67 50%,#1e6b79 75%,#12291e 100%);
-}
-
-/* SKY */
-
-.moon{
-    position:absolute;
-    width:90px;
-    height:90px;
-    right:9%;
-    top:8%;
-    border-radius:50%;
-    background:#fff7c7;
-    box-shadow:
-      0 0 25px #fff5a8,
-      0 0 70px rgba(255,245,168,.35);
-}
-
-.star{
-    position:absolute;
-    width:3px;
-    height:3px;
-    border-radius:50%;
-    background:white;
-    animation:twinkle 2s infinite alternate;
-}
-
-@keyframes twinkle{
-    from{opacity:.25}
-    to{opacity:1}
-}
-
-/* CLOUDS */
-
-.cloud{
-    position:absolute;
-    width:150px;
-    height:45px;
-    background:rgba(255,255,255,.14);
-    border-radius:50px;
-    filter:blur(1px);
-}
-
-.cloud:before,
-.cloud:after{
-    content:"";
-    position:absolute;
-    background:inherit;
-    border-radius:50%;
-}
-
-.cloud:before{
-    width:65px;
-    height:65px;
-    left:25px;
-    top:-28px;
-}
-
-.cloud:after{
-    width:75px;
-    height:75px;
-    right:20px;
-    top:-35px;
-}
-
-.cloud1{
-    top:17%;
-    left:-180px;
-    animation:cloudMove 25s linear infinite;
-}
-
-.cloud2{
-    top:28%;
-    left:-300px;
-    transform:scale(.7);
-    animation:cloudMove 35s linear infinite;
-}
-
-@keyframes cloudMove{
-    to{left:110%}
-}
-
-/* MOUNTAINS */
-
-.mountains{
-    position:absolute;
-    bottom:115px;
-    width:100%;
-    height:240px;
-    background:
-      linear-gradient(135deg,transparent 48%,#12334a 49% 65%,transparent 66%) 0 0/230px 220px repeat-x;
-    opacity:.9;
-}
-
-/* TREES */
-
-.treeLayer{
-    position:absolute;
-    bottom:82px;
-    width:200%;
-    height:150px;
-    display:flex;
-    gap:45px;
-    align-items:flex-end;
-    animation:trees 12s linear infinite;
-}
-
-.tree{
-    width:0;
-    height:0;
-    border-left:28px solid transparent;
-    border-right:28px solid transparent;
-    border-bottom:90px solid #092b27;
-    position:relative;
-}
-
-.tree:after{
-    content:"";
-    position:absolute;
-    left:-4px;
-    top:85px;
-    width:8px;
-    height:45px;
-    background:#271b12;
-}
-
-@keyframes trees{
-    from{transform:translateX(0)}
-    to{transform:translateX(-50%)}
-}
-
-/* GROUND */
-
-.ground{
-    position:absolute;
-    bottom:0;
-    width:100%;
-    height:115px;
-    background:#152719;
-    border-top:5px solid #50e36b;
-}
-
-.road{
-    position:absolute;
-    top:24px;
-    left:0;
-    width:200%;
-    height:6px;
-    background:repeating-linear-gradient(
-      90deg,
-      #d4ff89 0 55px,
-      transparent 55px 105px
-    );
-    animation:roadMove .65s linear infinite;
-}
-
-@keyframes roadMove{
-    to{transform:translateX(-105px)}
-}
-
-/* HUD */
-
-#hud{
-    position:absolute;
-    top:20px;
-    left:20px;
-    right:20px;
-    z-index:20;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    pointer-events:none;
-}
-
-.stat{
-    background:rgba(0,0,0,.35);
-    border:1px solid rgba(255,255,255,.18);
-    padding:9px 15px;
-    border-radius:15px;
+    font-family:Arial, sans-serif;
+    background:#111827;
     color:white;
-    font-weight:bold;
-    backdrop-filter:blur(8px);
-    text-shadow:0 2px 5px #000;
+    min-height:100vh;
+    padding:15px;
 }
 
-#pauseBtn{
-    pointer-events:auto;
-    border:0;
-    cursor:pointer;
-    background:rgba(255,255,255,.15);
-    color:white;
-    width:44px;
-    height:44px;
-    border-radius:50%;
-    font-size:20px;
-}
-
-/* PLAYER */
-
-#player{
-    position:absolute;
-    left:14%;
-    bottom:115px;
-    width:48px;
-    height:75px;
-    z-index:10;
-    transition:transform .08s;
-}
-
-.head{
-    position:absolute;
-    width:34px;
-    height:34px;
-    left:7px;
-    top:0;
-    background:#ffd0a6;
-    border-radius:50%;
-    border:3px solid #171717;
-}
-
-.hair{
-    position:absolute;
-    left:7px;
-    top:-3px;
-    width:34px;
-    height:17px;
-    background:#18131c;
-    border-radius:20px 20px 5px 5px;
-    z-index:2;
-}
-
-.body{
-    position:absolute;
-    left:9px;
-    top:31px;
-    width:30px;
-    height:32px;
-    background:linear-gradient(135deg,#20e3a2,#00a7ff);
-    border-radius:10px 10px 7px 7px;
-}
-
-.arm{
-    position:absolute;
-    width:9px;
-    height:27px;
-    background:#ffd0a6;
-    border:2px solid #171717;
-    border-radius:10px;
-    top:34px;
-}
-
-.arm1{
-    left:2px;
-    transform:rotate(35deg);
-}
-
-.arm2{
-    right:2px;
-    transform:rotate(-35deg);
-}
-
-.leg{
-    position:absolute;
-    width:10px;
-    height:28px;
-    background:#253b83;
-    border-radius:8px;
-    top:59px;
-}
-
-.leg1{
-    left:10px;
-    transform:rotate(20deg);
-}
-
-.leg2{
-    right:10px;
-    transform:rotate(-20deg);
-}
-
-.shoe{
-    position:absolute;
-    width:20px;
-    height:8px;
-    background:#fff;
-    border-radius:10px;
-}
-
-.shoe1{
-    left:3px;
-    top:82px;
-}
-
-.shoe2{
-    right:3px;
-    top:82px;
-}
-
-.running{
-    animation:run .18s infinite alternate;
-}
-
-@keyframes run{
-    from{transform:translateY(0)}
-    to{transform:translateY(-5px)}
-}
-
-/* OBSTACLE */
-
-.obstacle{
-    position:absolute;
-    bottom:115px;
-    width:42px;
-    height:62px;
-    z-index:9;
-    border-radius:8px 8px 3px 3px;
-    background:
-      linear-gradient(135deg,#ff416c,#8b1538);
-    border:3px solid #ff8ca5;
-    box-shadow:0 0 15px rgba(255,30,80,.5);
-}
-
-.obstacle:before{
-    content:"";
-    position:absolute;
-    top:-17px;
-    left:8px;
-    width:20px;
-    height:20px;
-    background:#ff416c;
-    transform:rotate(45deg);
-    border-radius:4px;
-}
-
-/* COIN */
-
-.coin{
-    position:absolute;
-    bottom:210px;
-    width:27px;
-    height:27px;
-    border-radius:50%;
-    background:#ffd83d;
-    border:4px solid #fff1a2;
-    box-shadow:0 0 18px #ffd83d;
-    z-index:8;
-    animation:coinSpin .55s linear infinite;
-}
-
-@keyframes coinSpin{
-    0%{transform:rotateY(0)}
-    50%{transform:rotateY(180deg) scale(.7)}
-    100%{transform:rotateY(360deg)}
-}
-
-/* SCREENS */
-
-.screen{
-    position:absolute;
-    inset:0;
-    z-index:50;
-    display:flex;
-    justify-content:center;
-    align-items:center;
+.game{
+    max-width:1100px;
+    margin:auto;
     text-align:center;
-    background:rgba(2,7,20,.72);
-    backdrop-filter:blur(7px);
 }
 
-.panel{
-    width:min(90%,440px);
-    padding:35px 25px;
-    border-radius:30px;
-    background:rgba(9,20,42,.9);
-    border:1px solid rgba(255,255,255,.15);
-    box-shadow:0 20px 60px rgba(0,0,0,.45);
-    color:white;
-}
-
-.logo{
-    font-size:clamp(50px,12vw,85px);
-    font-weight:1000;
-    letter-spacing:8px;
-    color:#55ff8b;
-    text-shadow:
-      0 0 10px #55ff8b,
-      0 0 35px rgba(85,255,139,.5);
+h1{
+    font-size:34px;
+    margin:10px 0;
 }
 
 .subtitle{
-    color:#a8bfd9;
-    margin:8px 0 25px;
+    color:#cbd5e1;
+    margin-bottom:15px;
 }
 
-button.play{
+/* PLAYER SELECT */
+
+.setup{
+    background:#1f2937;
+    padding:18px;
+    border-radius:15px;
+    margin-bottom:18px;
+}
+
+.setup h2{
+    margin-bottom:12px;
+}
+
+.player-buttons{
+    display:flex;
+    justify-content:center;
+    gap:8px;
+    flex-wrap:wrap;
+}
+
+.player-buttons button{
+    padding:10px 17px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:bold;
+    background:#374151;
+    color:white;
+}
+
+.player-buttons button.active{
+    background:#22c55e;
+}
+
+.start-btn{
+    margin-top:15px;
+    padding:12px 25px;
     border:0;
-    padding:16px 50px;
-    border-radius:50px;
-    font-size:20px;
+    border-radius:10px;
+    background:#2563eb;
+    color:white;
+    font-size:17px;
     font-weight:bold;
     cursor:pointer;
-    color:#03120a;
-    background:#55ff8b;
-    box-shadow:0 0 25px rgba(85,255,139,.45);
 }
 
-button.play:active{
-    transform:scale(.95);
+/* GAME INFO */
+
+.info{
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    flex-wrap:wrap;
+    margin-bottom:15px;
 }
+
+.info-box{
+    background:#1f2937;
+    padding:10px 18px;
+    border-radius:10px;
+}
+
+#turn{
+    font-weight:bold;
+}
+
+/* BOARD */
+
+.board{
+    width:min(700px,95vw);
+    height:min(700px,95vw);
+    margin:auto;
+
+    display:grid;
+    grid-template-columns:repeat(15,1fr);
+    grid-template-rows:repeat(15,1fr);
+
+    background:#f8fafc;
+
+    border:7px solid #020617;
+    border-radius:15px;
+
+    overflow:hidden;
+
+    box-shadow:0 15px 40px #0009;
+
+    position:relative;
+}
+
+/* HOME AREAS */
+
+.home{
+    position:absolute;
+    width:33.333%;
+    height:33.333%;
+
+    padding:12px;
+
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    grid-template-rows:1fr 1fr;
+
+    gap:8px;
+}
+
+.home.red{
+    left:0;
+    top:0;
+    background:#ef4444;
+}
+
+.home.blue{
+    right:0;
+    top:0;
+    background:#3b82f6;
+}
+
+.home.green{
+    left:0;
+    bottom:0;
+    background:#22c55e;
+}
+
+.home.yellow{
+    right:0;
+    bottom:0;
+    background:#eab308;
+}
+
+.home.purple{
+    left:33.333%;
+    top:33.333%;
+    background:#a855f7;
+    width:16.667%;
+    height:16.667%;
+}
+
+.home.orange{
+    right:33.333%;
+    bottom:33.333%;
+    background:#f97316;
+    width:16.667%;
+    height:16.667%;
+}
+
+.home-slot{
+    background:white;
+    border-radius:50%;
+    border:3px solid #111827;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    color:#111;
+    font-weight:bold;
+    font-size:11px;
+}
+
+/* CENTER */
+
+.center{
+    position:absolute;
+
+    left:33.333%;
+    top:33.333%;
+
+    width:33.333%;
+    height:33.333%;
+
+    background:
+    conic-gradient(
+        #ef4444 0deg 60deg,
+        #3b82f6 60deg 120deg,
+        #22c55e 120deg 180deg,
+        #eab308 180deg 240deg,
+        #a855f7 240deg 300deg,
+        #f97316 300deg 360deg
+    );
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:25px;
+    font-weight:bold;
+
+    border:3px solid #111827;
+}
+
+/* PATH */
+
+.path{
+    position:absolute;
+
+    left:16.667%;
+    top:16.667%;
+
+    width:66.666%;
+    height:66.666%;
+
+    display:grid;
+
+    grid-template-columns:repeat(11,1fr);
+    grid-template-rows:repeat(11,1fr);
+
+    pointer-events:none;
+}
+
+.path-cell{
+    border:1px solid #94a3b8;
+    background:#fff;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:9px;
+    color:#64748b;
+}
+
+/* TRACK COLORS */
+
+.red-cell{
+    background:#fecaca;
+}
+
+.blue-cell{
+    background:#bfdbfe;
+}
+
+.green-cell{
+    background:#bbf7d0;
+}
+
+.yellow-cell{
+    background:#fef08a;
+}
+
+.purple-cell{
+    background:#e9d5ff;
+}
+
+.orange-cell{
+    background:#fed7aa;
+}
+
+/* TOKENS */
+
+.token{
+    width:72%;
+    height:72%;
+
+    border-radius:50%;
+
+    border:3px solid #111;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:10px;
+    font-weight:bold;
+
+    color:white;
+
+    cursor:pointer;
+
+    position:absolute;
+
+    z-index:20;
+
+    box-shadow:0 3px 7px #0008;
+
+    transition:.2s;
+}
+
+.token:hover{
+    transform:scale(1.18);
+}
+
+.token.movable{
+    animation:pulse 1s infinite;
+}
+
+@keyframes pulse{
+    50%{
+        transform:scale(1.15);
+    }
+}
+
+.red-token{
+    background:#dc2626;
+}
+
+.blue-token{
+    background:#2563eb;
+}
+
+.green-token{
+    background:#16a34a;
+}
+
+.yellow-token{
+    background:#ca8a04;
+}
+
+.purple-token{
+    background:#9333ea;
+}
+
+.orange-token{
+    background:#ea580c;
+}
+
+/* CONTROLS */
 
 .controls{
-    margin-top:22px;
-    color:#91a8c2;
-    font-size:14px;
-    line-height:1.7;
+    margin-top:18px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    gap:15px;
+    flex-wrap:wrap;
 }
 
-.hidden{
-    display:none!important;
+.dice{
+    width:75px;
+    height:75px;
+
+    background:white;
+    color:#111;
+
+    border-radius:15px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:40px;
+    font-weight:bold;
+
+    box-shadow:0 5px 15px #0007;
+}
+
+.roll{
+    padding:14px 25px;
+
+    background:#22c55e;
+    color:white;
+
+    border:0;
+    border-radius:10px;
+
+    font-size:18px;
+    font-weight:bold;
+
+    cursor:pointer;
+}
+
+.roll:hover{
+    background:#16a34a;
+}
+
+.roll:disabled{
+    background:#475569;
+    cursor:not-allowed;
+}
+
+/* MESSAGE */
+
+.message{
+    min-height:28px;
+    margin-top:15px;
+    font-size:18px;
+    font-weight:bold;
+}
+
+/* PLAYER LIST */
+
+.players{
+    margin-top:15px;
+
+    display:flex;
+    justify-content:center;
+
+    gap:7px;
+    flex-wrap:wrap;
+}
+
+.player{
+    padding:8px 12px;
+    border-radius:8px;
+    font-weight:bold;
+}
+
+.red{
+    background:#dc2626;
+}
+
+.blue{
+    background:#2563eb;
+}
+
+.green{
+    background:#16a34a;
+}
+
+.yellow{
+    background:#ca8a04;
+}
+
+.purple{
+    background:#9333ea;
+}
+
+.orange{
+    background:#ea580c;
+}
+
+/* RESTART */
+
+.restart{
+    margin-top:15px;
+
+    padding:10px 20px;
+
+    border:0;
+    border-radius:8px;
+
+    background:#ef4444;
+    color:white;
+
+    cursor:pointer;
+    font-weight:bold;
 }
 
 /* MOBILE */
 
-#jumpBtn{
-    position:absolute;
-    z-index:30;
-    right:25px;
-    bottom:25px;
-    width:85px;
-    height:85px;
-    border-radius:50%;
-    border:2px solid rgba(255,255,255,.5);
-    background:rgba(85,255,139,.22);
-    color:white;
-    font-weight:bold;
-    font-size:15px;
-    backdrop-filter:blur(8px);
-}
-
-#jumpBtn:active{
-    transform:scale(.9);
-}
-
 @media(max-width:600px){
-    #game{
-        min-height:100vh;
+
+    body{
+        padding:7px;
     }
 
-    .moon{
-        width:65px;
-        height:65px;
+    h1{
+        font-size:25px;
     }
 
-    #player{
-        left:17%;
+    .board{
+        border-width:4px;
     }
 
-    .stat{
-        padding:7px 10px;
-        font-size:13px;
+    .home{
+        padding:5px;
+        gap:3px;
     }
 
-    #hud{
-        top:12px;
-        left:10px;
-        right:10px;
+    .home-slot{
+        border-width:2px;
+        font-size:7px;
     }
 
-    .ground{
-        height:100px;
+    .token{
+        border-width:2px;
+        font-size:7px;
     }
 
-    #player,
-    .obstacle{
-        bottom:100px;
+    .center{
+        font-size:14px;
     }
 
-    .treeLayer{
-        bottom:68px;
-    }
-
-    .mountains{
-        bottom:100px;
-    }
 }
+
 </style>
 </head>
 
 <body>
 
-<div id="game">
+<div class="game">
 
-    <!-- SKY -->
-    <div class="moon"></div>
+<h1>🎲 6 PLAYER LUDO</h1>
 
-    <div class="star" style="left:8%;top:12%"></div>
-    <div class="star" style="left:20%;top:20%"></div>
-    <div class="star" style="left:35%;top:10%"></div>
-    <div class="star" style="left:50%;top:18%"></div>
-    <div class="star" style="left:65%;top:8%"></div>
-    <div class="star" style="left:80%;top:24%"></div>
-    <div class="star" style="left:90%;top:13%"></div>
-    <div class="star" style="left:45%;top:30%"></div>
+<div class="subtitle">
+Play Ludo with your friends
+</div>
 
-    <div class="cloud cloud1"></div>
-    <div class="cloud cloud2"></div>
 
-    <div class="mountains"></div>
+<!-- PLAYER SETUP -->
 
-    <div class="treeLayer">
-        <div class="tree"></div>
-        <div class="tree"></div>
-        <div class="tree"></div>
-        <div class="tree"></div>
-        <div class="tree"></div>
-        <div class="tree"></div>
-        <div class="tree"></div>
-        <div class="tree"></div>
-        <div class="tree"></div>
-        <div class="tree"></div>
-    </div>
+<div class="setup">
 
-    <!-- HUD -->
-    <div id="hud" class="hidden">
-        <div class="stat">🏆 <span id="score">0</span></div>
-        <div class="stat">🪙 <span id="coins">0</span></div>
-        <div class="stat">⭐ <span id="best">0</span></div>
-        <button id="pauseBtn">Ⅱ</button>
-    </div>
+<h2>Select Players</h2>
 
-    <!-- PLAYER -->
-    <div id="player" class="running">
-        <div class="hair"></div>
-        <div class="head"></div>
-        <div class="body"></div>
-        <div class="arm arm1"></div>
-        <div class="arm arm2"></div>
-        <div class="leg leg1"></div>
-        <div class="leg leg2"></div>
-        <div class="shoe shoe1"></div>
-        <div class="shoe shoe2"></div>
-    </div>
+<div class="player-buttons">
 
-    <!-- GROUND -->
-    <div class="ground">
-        <div class="road"></div>
-    </div>
-
-    <!-- MOBILE BUTTON -->
-    <button id="jumpBtn">JUMP</button>
-
-    <!-- START SCREEN -->
-    <div id="startScreen" class="screen">
-        <div class="panel">
-            <div class="logo">RUNING</div>
-            <div class="subtitle">THE ENDLESS RUNNER</div>
-
-            <button class="play" id="startBtn">▶ PLAY NOW</button>
-
-            <div class="controls">
-                🖥️ Space / ↑ = Jump<br>
-                📱 Tap JUMP = Jump<br>
-                🪙 Collect coins and survive!
-            </div>
-        </div>
-    </div>
-
-    <!-- GAME OVER -->
-    <div id="gameOver" class="screen hidden">
-        <div class="panel">
-            <div style="font-size:45px">💥</div>
-            <h1 style="margin:10px 0">GAME OVER</h1>
-
-            <p style="color:#9fb4ca">
-                Your Score
-            </p>
-
-            <div id="finalScore"
-                 style="font-size:55px;font-weight:bold;color:#55ff8b">
-                0
-            </div>
-
-            <p style="margin:8px 0 22px;color:#ffd83d">
-                🪙 <span id="finalCoins">0</span> coins
-            </p>
-
-            <button class="play" id="restartBtn">
-                ↻ PLAY AGAIN
-            </button>
-        </div>
-    </div>
-
-    <!-- PAUSE -->
-    <div id="pauseScreen" class="screen hidden">
-        <div class="panel">
-            <div style="font-size:50px">Ⅱ</div>
-            <h1>PAUSED</h1>
-            <br>
-            <button class="play" id="resumeBtn">
-                ▶ RESUME
-            </button>
-        </div>
-    </div>
+<button onclick="selectPlayers(2)" id="p2">2 Players</button>
+<button onclick="selectPlayers(3)" id="p3">3 Players</button>
+<button onclick="selectPlayers(4)" id="p4" class="active">4 Players</button>
+<button onclick="selectPlayers(5)" id="p5">5 Players</button>
+<button onclick="selectPlayers(6)" id="p6">6 Players</button>
 
 </div>
 
+<button class="start-btn" onclick="startGame()">
+Start Game
+</button>
+
+</div>
+
+
+<!-- INFO -->
+
+<div class="info">
+
+<div class="info-box">
+Players:
+<span id="playerCount">4</span>
+</div>
+
+<div class="info-box">
+Turn:
+<span id="turn">Red</span>
+</div>
+
+</div>
+
+
+<!-- BOARD -->
+
+<div class="board" id="board">
+
+
+<!-- HOMES -->
+
+<div class="home red">
+
+<div class="home-slot">R1</div>
+<div class="home-slot">R2</div>
+<div class="home-slot">R3</div>
+<div class="home-slot">R4</div>
+
+</div>
+
+
+<div class="home blue">
+
+<div class="home-slot">B1</div>
+<div class="home-slot">B2</div>
+<div class="home-slot">B3</div>
+<div class="home-slot">B4</div>
+
+</div>
+
+
+<div class="home green">
+
+<div class="home-slot">G1</div>
+<div class="home-slot">G2</div>
+<div class="home-slot">G3</div>
+<div class="home-slot">G4</div>
+
+</div>
+
+
+<div class="home yellow">
+
+<div class="home-slot">Y1</div>
+<div class="home-slot">Y2</div>
+<div class="home-slot">Y3</div>
+<div class="home-slot">Y4</div>
+
+</div>
+
+
+<div class="home purple">
+
+<div class="home-slot">P1</div>
+<div class="home-slot">P2</div>
+<div class="home-slot">P3</div>
+<div class="home-slot">P4</div>
+
+</div>
+
+
+<div class="home orange">
+
+<div class="home-slot">O1</div>
+<div class="home-slot">O2</div>
+<div class="home-slot">O3</div>
+<div class="home-slot">O4</div>
+
+</div>
+
+
+<!-- CENTER -->
+
+<div class="center">
+🏆
+</div>
+
+
+<!-- PATH -->
+
+<div class="path" id="path"></div>
+
+</div>
+
+
+<!-- CONTROLS -->
+
+<div class="controls">
+
+<div class="dice" id="dice">
+🎲
+</div>
+
+<button class="roll" id="rollButton" onclick="rollDice()">
+Roll Dice
+</button>
+
+</div>
+
+
+<div class="message" id="message">
+Red's turn. Roll the dice!
+</div>
+
+
+<!-- PLAYERS -->
+
+<div class="players">
+
+<div class="player red">🔴 Red</div>
+<div class="player blue">🔵 Blue</div>
+<div class="player green">🟢 Green</div>
+<div class="player yellow">🟡 Yellow</div>
+<div class="player purple">🟣 Purple</div>
+<div class="player orange">🟠 Orange</div>
+
+</div>
+
+
+<button class="restart" onclick="startGame()">
+🔄 Restart Game
+</button>
+
+</div>
+
+
 <script>
 
-const game = document.getElementById("game");
-const player = document.getElementById("player");
+/* =========================
+   PLAYER DATA
+========================= */
 
-const scoreEl = document.getElementById("score");
-const coinsEl = document.getElementById("coins");
-const bestEl = document.getElementById("best");
+const allPlayers = [
 
-const startScreen = document.getElementById("startScreen");
-const gameOver = document.getElementById("gameOver");
-const pauseScreen = document.getElementById("pauseScreen");
-const hud = document.getElementById("hud");
+{
+    name:"Red",
+    color:"red",
+    emoji:"🔴",
+    start:0
+},
 
-const finalScore = document.getElementById("finalScore");
-const finalCoins = document.getElementById("finalCoins");
+{
+    name:"Blue",
+    color:"blue",
+    emoji:"🔵",
+    start:10
+},
 
-const jumpBtn = document.getElementById("jumpBtn");
-const pauseBtn = document.getElementById("pauseBtn");
+{
+    name:"Green",
+    color:"green",
+    emoji:"🟢",
+    start:20
+},
 
-let playing = false;
-let paused = false;
+{
+    name:"Yellow",
+    color:"yellow",
+    emoji:"🟡",
+    start:30
+},
 
-let score = 0;
-let coins = 0;
-let best = Number(localStorage.getItem("RUNING_BEST") || 0);
+{
+    name:"Purple",
+    color:"purple",
+    emoji:"🟣",
+    start:40
+},
 
-let playerY = 0;
-let velocityY = 0;
-let jumps = 0;
+{
+    name:"Orange",
+    color:"orange",
+    emoji:"🟠",
+    start:50
+}
 
-let speed = 6;
-let obstacleTimer = 0;
-let coinTimer = 0;
-let lastTime = 0;
-
-bestEl.textContent = best;
+];
 
 
-/* SOUND */
+/* =========================
+   GAME VARIABLES
+========================= */
 
-let audioCtx;
+let numberOfPlayers = 4;
 
-function sound(type){
+let players = [];
 
-    try{
+let currentPlayer = 0;
 
-        if(!audioCtx){
-            audioCtx = new
-            (window.AudioContext || window.webkitAudioContext)();
-        }
+let diceValue = 0;
 
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
+let gameStarted = false;
 
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
 
-        if(type === "jump"){
-            osc.frequency.value = 500;
-        }
+/*
+Each player has 4 tokens.
 
-        if(type === "coin"){
-            osc.frequency.value = 850;
-        }
+-1 = HOME
+0+ = board position
+60 = FINISHED
+*/
 
-        if(type === "hit"){
-            osc.frequency.value = 100;
-        }
+let tokens = [];
 
-        gain.gain.setValueAtTime(.08,audioCtx.currentTime);
 
-        gain.gain.exponentialRampToValueAtTime(
-            .001,
-            audioCtx.currentTime + .12
-        );
+/* =========================
+   SELECT PLAYERS
+========================= */
 
-        osc.start();
-        osc.stop(audioCtx.currentTime + .12);
+function selectPlayers(number){
 
-    }catch(e){}
+    numberOfPlayers = number;
+
+    document
+    .querySelectorAll(".player-buttons button")
+    .forEach(button=>{
+        button.classList.remove("active");
+    });
+
+    document
+    .getElementById("p"+number)
+    .classList.add("active");
+
+    document
+    .getElementById("playerCount")
+    .innerText = number;
+
 }
 
 
-/* START */
+/* =========================
+   START GAME
+========================= */
 
 function startGame(){
 
-    score = 0;
-    coins = 0;
+    players = allPlayers.slice(0,numberOfPlayers);
 
-    speed = 6;
+    currentPlayer = 0;
 
-    playerY = 0;
-    velocityY = 0;
-    jumps = 0;
+    diceValue = 0;
 
-    scoreEl.textContent = 0;
-    coinsEl.textContent = 0;
+    gameStarted = true;
 
-    document.querySelectorAll(".obstacle,.coin")
-        .forEach(e => e.remove());
+    tokens = [];
 
-    startScreen.classList.add("hidden");
-    gameOver.classList.add("hidden");
-    pauseScreen.classList.add("hidden");
+    players.forEach((player,index)=>{
 
-    hud.classList.remove("hidden");
+        tokens[index] = [-1,-1,-1,-1];
 
-    playing = true;
-    paused = false;
+    });
 
-    lastTime = performance.now();
+    document.getElementById("dice").innerText = "🎲";
 
-    requestAnimationFrame(loop);
+    document.getElementById("turn").innerText =
+        players[0].name;
+
+    document.getElementById("message").innerText =
+        players[0].name + "'s turn. Roll the dice!";
+
+    document.getElementById("rollButton").disabled = false;
+
+    drawTokens();
+
 }
 
 
-/* JUMP */
+/* =========================
+   DICE
+========================= */
 
-function jump(){
+function rollDice(){
 
-    if(!playing || paused) return;
+    if(!gameStarted) return;
 
-    if(jumps < 2){
+    diceValue =
+        Math.floor(Math.random()*6)+1;
 
-        velocityY = 13;
-        jumps++;
+    document.getElementById("dice").innerText =
+        diceValue;
 
-        sound("jump");
+    let player = players[currentPlayer];
 
-        player.classList.remove("running");
+    document.getElementById("message").innerText =
+        player.emoji +
+        " " +
+        player.name +
+        " rolled " +
+        diceValue +
+        "!";
+
+    /*
+    Check movable tokens
+    */
+
+    let movable = getMovableTokens();
+
+    if(movable.length === 0){
+
+        document.getElementById("message").innerText =
+            player.name +
+            " has no possible move.";
+
+        if(diceValue !== 6){
+
+            setTimeout(nextTurn,900);
+
+        }
+
+        return;
+    }
+
+    /*
+    Highlight movable tokens
+    */
+
+    highlightMovable(movable);
+
+}
+
+
+/* =========================
+   MOVABLE TOKENS
+========================= */
+
+function getMovableTokens(){
+
+    let result = [];
+
+    let playerTokens =
+        tokens[currentPlayer];
+
+    playerTokens.forEach((position,index)=>{
+
+        /*
+        Token in HOME
+
+        Only 6 can bring it out
+        */
+
+        if(position === -1){
+
+            if(diceValue === 6){
+
+                result.push(index);
+
+            }
+
+            return;
+
+        }
+
+
+        /*
+        Finished token
+        */
+
+        if(position === 60){
+
+            return;
+
+        }
+
+
+        /*
+        Normal movement
+        */
+
+        if(position + diceValue <= 60){
+
+            result.push(index);
+
+        }
+
+    });
+
+    return result;
+
+}
+
+
+/* =========================
+   HIGHLIGHT
+========================= */
+
+function highlightMovable(list){
+
+    document
+    .querySelectorAll(".token")
+    .forEach(token=>{
+
+        token.classList.remove("movable");
+
+    });
+
+
+    list.forEach(index=>{
+
+        let token =
+            document.querySelector(
+                `.token[data-player="${currentPlayer}"][data-token="${index}"]`
+            );
+
+        if(token){
+
+            token.classList.add("movable");
+
+        }
+
+    });
+
+
+    /*
+    For easy testing,
+    automatically move after short delay
+    */
+
+    if(list.length === 1){
 
         setTimeout(()=>{
-            if(playing)
-                player.classList.add("running");
-        },200);
+
+            moveToken(list[0]);
+
+        },500);
+
     }
-}
-
-
-/* KEYBOARD */
-
-document.addEventListener("keydown",e=>{
-
-    if(
-        e.code === "Space" ||
-        e.code === "ArrowUp"
-    ){
-        e.preventDefault();
-        jump();
-    }
-
-    if(e.code === "Escape"){
-        togglePause();
-    }
-});
-
-
-/* TOUCH */
-
-jumpBtn.addEventListener("touchstart",e=>{
-    e.preventDefault();
-    jump();
-});
-
-jumpBtn.addEventListener("click",jump);
-
-
-/* PAUSE */
-
-function togglePause(){
-
-    if(!playing) return;
-
-    paused = !paused;
-
-    if(paused){
-
-        pauseScreen.classList.remove("hidden");
-
-    }else{
-
-        pauseScreen.classList.add("hidden");
-        lastTime = performance.now();
-
-        requestAnimationFrame(loop);
-    }
-}
-
-pauseBtn.addEventListener("click",togglePause);
-
-document.getElementById("resumeBtn")
-    .addEventListener("click",togglePause);
-
-
-/* CREATE OBSTACLE */
-
-function createObstacle(){
-
-    const obstacle = document.createElement("div");
-
-    obstacle.className = "obstacle";
-
-    obstacle.style.left =
-        game.clientWidth + "px";
-
-    game.appendChild(obstacle);
 
 }
 
 
-/* CREATE COIN */
+/* =========================
+   MOVE TOKEN
+========================= */
 
-function createCoin(){
+function moveToken(tokenIndex){
 
-    const coin = document.createElement("div");
+    let playerTokens =
+        tokens[currentPlayer];
 
-    coin.className = "coin";
-
-    coin.style.left =
-        game.clientWidth + "px";
-
-    const heights = [170,220,275];
-
-    coin.style.bottom =
-        heights[Math.floor(Math.random()*heights.length)]
-        + "px";
-
-    game.appendChild(coin);
-}
+    let oldPosition =
+        playerTokens[tokenIndex];
 
 
-/* COLLISION */
+    /*
+    HOME -> BOARD
+    */
 
-function collision(a,b){
+    if(oldPosition === -1){
 
-    const r1 = a.getBoundingClientRect();
-    const r2 = b.getBoundingClientRect();
+        if(diceValue !== 6){
 
-    return !(
-        r1.right < r2.left + 7 ||
-        r1.left + 7 > r2.right ||
-        r1.bottom - 8 < r2.top ||
-        r1.top + 8 > r2.bottom
+            return;
+
+        }
+
+        playerTokens[tokenIndex] = 0;
+
+    }
+
+    else{
+
+        playerTokens[tokenIndex] += diceValue;
+
+    }
+
+
+    let newPosition =
+        playerTokens[tokenIndex];
+
+
+    /*
+    CAPTURE
+    */
+
+    captureOpponents(
+        currentPlayer,
+        newPosition
     );
+
+
+    /*
+    WIN CHECK
+    */
+
+    if(checkWinner(currentPlayer)){
+
+        document.getElementById("message").innerText =
+            "🏆 " +
+            players[currentPlayer].name +
+            " WINS THE GAME! 🎉";
+
+        document.getElementById("rollButton").disabled =
+            true;
+
+        return;
+
+    }
+
+
+    drawTokens();
+
+
+    /*
+    6 = another turn
+    */
+
+    if(diceValue === 6){
+
+        document.getElementById("message").innerText =
+            players[currentPlayer].name +
+            " rolled 6! Roll again.";
+
+        document.getElementById("dice").innerText =
+            "🎲";
+
+        return;
+
+    }
+
+
+    nextTurn();
+
 }
 
 
-/* GAME OVER */
+/* =========================
+   CAPTURE
+========================= */
 
-function endGame(){
+function captureOpponents(playerIndex,position){
 
-    playing = false;
+    if(position < 0 || position >= 60){
 
-    sound("hit");
+        return;
 
-    if(score > best){
+    }
 
-        best = score;
 
-        localStorage.setItem(
-            "RUNING_BEST",
-            best
+    /*
+    Safe starting positions
+    */
+
+    const safePositions =
+        [0,10,20,30,40,50];
+
+
+    if(safePositions.includes(
+        (position +
+        players[playerIndex].start)%60
+    )){
+
+        return;
+
+    }
+
+
+    players.forEach((player,index)=>{
+
+        if(index === playerIndex){
+
+            return;
+
+        }
+
+
+        tokens[index].forEach((tokenPosition,tokenIndex)=>{
+
+            if(tokenPosition === -1 ||
+               tokenPosition === 60){
+
+                return;
+
+            }
+
+
+            let realPosition =
+                (players[index].start +
+                tokenPosition)%60;
+
+
+            let myRealPosition =
+                (players[playerIndex].start +
+                position)%60;
+
+
+            if(realPosition === myRealPosition){
+
+                tokens[index][tokenIndex] = -1;
+
+                document.getElementById("message").innerText =
+                    players[playerIndex].name +
+                    " captured " +
+                    players[index].name +
+                    "'s token! 💥";
+
+            }
+
+        });
+
+    });
+
+}
+
+
+/* =========================
+   WINNER
+========================= */
+
+function checkWinner(playerIndex){
+
+    return tokens[playerIndex]
+        .every(position=>position === 60);
+
+}
+
+
+/* =========================
+   NEXT TURN
+========================= */
+
+function nextTurn(){
+
+    currentPlayer++;
+
+    if(currentPlayer >= players.length){
+
+        currentPlayer = 0;
+
+    }
+
+
+    document.getElementById("turn").innerText =
+        players[currentPlayer].name;
+
+
+    document.getElementById("turn").style.color =
+        getColor(players[currentPlayer].color);
+
+
+    document.getElementById("dice").innerText =
+        "🎲";
+
+
+    document.getElementById("message").innerText =
+        players[currentPlayer].emoji +
+        " " +
+        players[currentPlayer].name +
+        "'s turn. Roll the dice!";
+
+
+    drawTokens();
+
+}
+
+
+/* =========================
+   COLOR
+========================= */
+
+function getColor(color){
+
+    const colors = {
+
+        red:"#dc2626",
+
+        blue:"#2563eb",
+
+        green:"#16a34a",
+
+        yellow:"#eab308",
+
+        purple:"#9333ea",
+
+        orange:"#ea580c"
+
+    };
+
+    return colors[color];
+
+}
+
+
+/* =========================
+   DRAW TOKENS
+========================= */
+
+function drawTokens(){
+
+    /*
+    Remove old tokens
+    */
+
+    document
+    .querySelectorAll(".token")
+    .forEach(token=>{
+        token.remove();
+    });
+
+
+    players.forEach((player,playerIndex)=>{
+
+        tokens[playerIndex].forEach(
+            (position,tokenIndex)=>{
+
+                if(position === 60){
+
+                    return;
+
+                }
+
+
+                createToken(
+                    playerIndex,
+                    tokenIndex,
+                    position
+                );
+
+            }
         );
 
-        bestEl.textContent = best;
-    }
+    });
 
-    finalScore.textContent = score;
-    finalCoins.textContent = coins;
-
-    gameOver.classList.remove("hidden");
 }
 
 
-/* MAIN LOOP */
+/* =========================
+   CREATE TOKEN
+========================= */
 
-function loop(time){
+function createToken(
+    playerIndex,
+    tokenIndex,
+    position
+){
 
-    if(!playing || paused) return;
+    let token =
+        document.createElement("div");
 
-    const dt = Math.min(
-        (time - lastTime) / 16.67,
-        2
+    token.className =
+        "token " +
+        players[playerIndex].color +
+        "-token";
+
+
+    token.innerText =
+        tokenIndex+1;
+
+
+    token.dataset.player =
+        playerIndex;
+
+
+    token.dataset.token =
+        tokenIndex;
+
+
+    /*
+    HOME POSITION
+    */
+
+    if(position === -1){
+
+        placeHomeToken(
+            token,
+            playerIndex,
+            tokenIndex
+        );
+
+    }
+
+    else{
+
+        placeBoardToken(
+            token,
+            playerIndex,
+            position
+        );
+
+    }
+
+
+    document
+    .getElementById("board")
+    .appendChild(token);
+
+}
+
+
+/* =========================
+   HOME TOKEN
+========================= */
+
+function placeHomeToken(
+    token,
+    playerIndex,
+    tokenIndex
+){
+
+    const positions = [
+
+        [
+            [4,4],
+            [10,4],
+            [4,10],
+            [10,10]
+        ],
+
+        [
+            [4,52],
+            [10,52],
+            [4,58],
+            [10,58]
+        ],
+
+        [
+            [4,4],
+            [10,4],
+            [4,10],
+            [10,10]
+        ],
+
+        [
+            [78,4],
+            [84,4],
+            [78,10],
+            [84,10]
+        ],
+
+        [
+            [42,42],
+            [46,42],
+            [42,46],
+            [46,46]
+        ],
+
+        [
+            [54,54],
+            [58,54],
+            [54,58],
+            [58,58]
+        ]
+
+    ];
+
+
+    let pos =
+        positions[playerIndex][tokenIndex];
+
+
+    token.style.left =
+        pos[0] + "%";
+
+
+    token.style.top =
+        pos[1] + "%";
+
+
+    token.style.width =
+        "7%";
+
+
+    token.style.height =
+        "7%";
+
+
+    token.onclick = ()=>{
+
+        if(
+            playerIndex === currentPlayer &&
+            diceValue === 6
+        ){
+
+            moveToken(tokenIndex);
+
+        }
+
+    };
+
+}
+
+
+/* =========================
+   BOARD TOKEN
+========================= */
+
+function placeBoardToken(
+    token,
+    playerIndex,
+    position
+){
+
+    /*
+    Create circular path
+    */
+
+    const angle =
+        ((position % 60)/60) *
+        Math.PI * 2 -
+        Math.PI/2;
+
+
+    const radius = 30;
+
+
+    const centerX = 50;
+    const centerY = 50;
+
+
+    let x =
+        centerX +
+        Math.cos(angle)*radius;
+
+
+    let y =
+        centerY +
+        Math.sin(angle)*radius;
+
+
+    token.style.left =
+        (x-3.5) + "%";
+
+
+    token.style.top =
+        (y-3.5) + "%";
+
+
+    token.style.width =
+        "7%";
+
+
+    token.style.height =
+        "7%";
+
+
+    token.onclick = ()=>{
+
+        if(playerIndex !== currentPlayer){
+
+            return;
+
+        }
+
+
+        let movable =
+            getMovableTokens();
+
+
+        if(movable.includes(tokenIndexFromToken(token))){
+
+            moveToken(
+                tokenIndexFromToken(token)
+            );
+
+        }
+
+    };
+
+}
+
+
+/* =========================
+   TOKEN INDEX
+========================= */
+
+function tokenIndexFromToken(token){
+
+    return parseInt(
+        token.dataset.token
     );
 
-    lastTime = time;
-
-    /* PLAYER PHYSICS */
-
-    velocityY -= .7 * dt;
-
-    playerY += velocityY * dt;
-
-    if(playerY <= 0){
-
-        playerY = 0;
-        velocityY = 0;
-        jumps = 0;
-    }
-
-    player.style.bottom =
-        (115 + playerY) + "px";
-
-
-    /* SPEED */
-
-    speed =
-        6 + Math.floor(score / 100) * .8;
-
-
-    /* OBSTACLES */
-
-    obstacleTimer += dt;
-
-    if(obstacleTimer > Math.max(55,105 - speed*4)){
-
-        obstacleTimer = 0;
-
-        createObstacle();
-    }
-
-
-    /* COINS */
-
-    coinTimer += dt;
-
-    if(coinTimer > 75){
-
-        coinTimer = 0;
-
-        createCoin();
-    }
-
-
-    /* MOVE OBJECTS */
-
-    document
-    .querySelectorAll(".obstacle")
-    .forEach(ob=>{
-
-        let x =
-            parseFloat(ob.style.left);
-
-        x -= speed * dt;
-
-        ob.style.left = x + "px";
-
-
-        if(collision(player,ob)){
-
-            endGame();
-        }
-
-        if(x < -70){
-
-            ob.remove();
-
-            score++;
-
-            scoreEl.textContent = score;
-        }
-    });
-
-
-    document
-    .querySelectorAll(".coin")
-    .forEach(c=>{
-
-        let x =
-            parseFloat(c.style.left);
-
-        x -= speed * dt;
-
-        c.style.left = x + "px";
-
-
-        if(collision(player,c)){
-
-            coins++;
-
-            score += 5;
-
-            coinsEl.textContent = coins;
-            scoreEl.textContent = score;
-
-            sound("coin");
-
-            c.remove();
-        }
-
-        else if(x < -60){
-
-            c.remove();
-        }
-    });
-
-
-    requestAnimationFrame(loop);
 }
 
 
-/* BUTTONS */
+/* =========================
+   KEYBOARD
+========================= */
 
-document
-.getElementById("startBtn")
-.addEventListener("click",startGame);
+document.addEventListener(
+    "keydown",
+    function(event){
 
-document
-.getElementById("restartBtn")
-.addEventListener("click",startGame);
+        if(event.code === "Space"){
+
+            rollDice();
+
+        }
+
+    }
+);
 
 
-/* INITIAL PLAYER */
+/* =========================
+   START
+========================= */
 
-player.style.bottom = "115px";
+selectPlayers(4);
+
+startGame();
 
 </script>
 
